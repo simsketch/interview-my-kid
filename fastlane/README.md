@@ -31,13 +31,21 @@ Create the App Store Connect app via API (bundle ID must already exist in dev po
 
 Build and upload a build to TestFlight (no App Store review submission)
 
+### ios screenshots
+
+```sh
+[bundle exec] fastlane ios screenshots
+```
+
+Push only screenshots to ASC (skips metadata, avoids review-info fetch bug for new apps)
+
 ### ios metadata
 
 ```sh
 [bundle exec] fastlane ios metadata
 ```
 
-Push App Store metadata + screenshots to ASC without building (precheck)
+Push App Store metadata text + screenshots to ASC (requires existing review submission)
 
 ### ios release
 

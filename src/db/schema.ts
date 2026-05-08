@@ -2,7 +2,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 export const DB_NAME = 'interviews.db';
 
-const TARGET_VERSION = 2;
+const TARGET_VERSION = 3;
 
 export async function migrate(db: SQLiteDatabase): Promise<void> {
   await db.execAsync(`
@@ -42,6 +42,21 @@ export async function migrate(db: SQLiteDatabase): Promise<void> {
   if (current < 2) {
     await tryAddColumn(db, 'sessions', 'burned_video_path', 'TEXT');
     await tryAddColumn(db, 'sessions', 'cues_json', 'TEXT');
+  }
+
+  if (current < 3) {
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS card_sets (
+        id TEXT PRIMARY KEY NOT NULL,
+        name TEXT NOT NULL,
+        category TEXT NOT NULL,
+        prompts_json TEXT NOT NULL,
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER NOT NULL,
+        last_used_at INTEGER
+      );
+      CREATE INDEX IF NOT EXISTS idx_card_sets_updated_at ON card_sets(updated_at DESC);
+    `);
   }
 
   if (current < TARGET_VERSION) {

@@ -14,7 +14,7 @@ export function buildSystemPrompt(opts: {
   const cat = categoryById(opts.category);
   const subject = opts.kidName ?? 'the child';
   return [
-    `You are helping a parent interview their kid (${subject}) about baseball on video.`,
+    `You are helping a parent interview their kid (${subject}) on video.`,
     `The parent will read each question aloud as a cue card. Questions should be short, warm, and age-appropriate.`,
     ``,
     `Category: ${cat.label}`,
@@ -24,9 +24,10 @@ export function buildSystemPrompt(opts: {
     `- Each question must be one sentence, under ~18 words.`,
     `- Open-ended where possible (avoid yes/no).`,
     `- Mix of factual ("what happened"), emotional ("how did it feel"), and reflective ("what would you do again").`,
-    `- Avoid leading questions and avoid asking the kid to evaluate teammates negatively.`,
+    `- Avoid leading questions and avoid asking the kid to evaluate other people negatively.`,
     `- Address ${subject} directly using "you" — do not use third person.`,
     `- Use natural spoken language a parent would actually say.`,
+    `- Trust the category context above and any parent-provided context for the topic; do not assume sports unless stated.`,
     ``,
     `Return EXACTLY this JSON shape, no prose, no markdown fences:`,
     `{"questions": ["...", "...", "..."]}`,

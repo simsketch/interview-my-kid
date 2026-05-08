@@ -38,8 +38,9 @@ platform :ios do
 
   desc "Run expo prebuild so the iOS project + Pods are up to date before building"
   private_lane :expo_prebuild do
-    sh("cd .. && npx expo prebuild --platform ios --no-install")
-    sh("cd ../ios && pod install")
+    project_root = File.expand_path("..", __dir__)
+    sh("cd #{project_root} && npx expo prebuild --platform ios --no-install")
+    cocoapods(podfile: File.join(project_root, "ios/Podfile"), clean_install: true)
   end
 
   desc "Create the App Store Connect app via API (bundle ID must already exist in dev portal)"
@@ -69,10 +70,28 @@ platform :ios do
     UI.message("Build number bumped to #{next_build}")
   end
 
+  desc "Ensure an App Store distribution cert + provisioning profile exist"
+  private_lane :ensure_signing do
+    asc_login
+    cert
+    sigh(app_identifier: APP_ID, force: true, platform: "ios")
+  end
+
   desc "Build the iOS app for the App Store and produce an .ipa in build/"
   private_lane :build_ipa do
     output_dir = File.expand_path("../build", __dir__)
     FileUtils.mkdir_p(output_dir)
+    team_id = ENV["FASTLANE_TEAM_ID"]
+    profile_name = ENV["sigh_#{APP_ID}_appstore_profile-name"] ||
+                   lane_context[SharedValues::SIGH_NAME] ||
+                   nil
+    export_options = {
+      signingStyle: "manual",
+      teamID: team_id
+    }
+    if profile_name
+      export_options[:provisioningProfiles] = { APP_ID => profile_name }
+    end
     build_app(
       workspace: WORKSPACE,
       scheme: SCHEME,
@@ -83,7 +102,9 @@ platform :ios do
       clean: true,
       include_bitcode: false,
       include_symbols: true,
-      silent: false
+      silent: false,
+      xcargs: "-allowProvisioningUpdates DEVELOPMENT_TEAM=#{team_id}",
+      export_options: export_options
     )
   end
 
@@ -91,6 +112,7 @@ platform :ios do
   lane :beta do
     asc_login
     expo_prebuild
+    ensure_signing
     bump_build
     build_ipa
     upload_to_testflight(
@@ -101,7 +123,21 @@ platform :ios do
     UI.success("✅ Uploaded to TestFlight. Watch ASC for processing status.")
   end
 
-  desc "Push App Store metadata + screenshots to ASC without building (precheck)"
+  desc "Push only screenshots to ASC (skips metadata, avoids review-info fetch bug for new apps)"
+  lane :screenshots do
+    asc_login
+    upload_to_app_store(
+      app_identifier: APP_ID,
+      skip_binary_upload: true,
+      skip_metadata: true,
+      skip_screenshots: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      submit_for_review: false
+    )
+  end
+
+  desc "Push App Store metadata text + screenshots to ASC (requires existing review submission)"
   lane :metadata do
     asc_login
     upload_to_app_store(
@@ -111,7 +147,16 @@ platform :ios do
       skip_metadata: false,
       force: true,
       precheck_include_in_app_purchases: false,
-      submit_for_review: false
+      submit_for_review: false,
+      app_review_information: {
+        first_name: "Elon",
+        last_name: "Zito",
+        phone_number: "+1 555-555-5555",
+        email_address: ENV["FASTLANE_APPLE_ID"],
+        demo_user: "",
+        demo_password: "",
+        notes: "Interview My Kid stores everything on device. The Cloud AI option requires the user to provide their own OpenRouter API key in Settings — to test, leave AI Provider as 'Auto' and the built-in question bank fallback will be used. To test on-device generation, run on iOS 26 with Apple Intelligence enabled."
+      }
     )
   end
 
@@ -119,6 +164,7 @@ platform :ios do
   lane :release do
     asc_login
     expo_prebuild
+    ensure_signing
     bump_build
     build_ipa
     upload_to_app_store(

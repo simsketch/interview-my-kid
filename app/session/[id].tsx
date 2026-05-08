@@ -17,7 +17,13 @@ import {
   type Cue,
   type SessionWithPrompts,
 } from '../../src/db/sessions';
-import { burnedVideoPathFor, deleteVideoFile } from '../../src/storage/files';
+import {
+  burnedVideoFilenameFor,
+  deleteVideoFile,
+  newBurnedVideoAbsolutePath,
+  resolveVideoPath,
+  videoFileExists,
+} from '../../src/storage/files';
 import { getBurnIn, getOverlayPosition } from '../../src/storage/keychain';
 import {
   fontSize,
@@ -69,27 +75,34 @@ export default function SessionDetailScreen() {
   const [deleting, setDeleting] = useState(false);
   const [burning, setBurning] = useState(false);
   const [showBurned, setShowBurned] = useState(true);
+  const [videoMissing, setVideoMissing] = useState(false);
 
   useEffect(() => {
     let active = true;
     if (!id) return;
-    getSession(db, id)
-      .then((s) => {
+    (async () => {
+      try {
+        const s = await getSession(db, id);
         if (!active) return;
         setSession(s);
-        setLoaded(true);
-      })
-      .catch(() => active && setLoaded(true));
+        if (s) {
+          const exists = await videoFileExists(s.videoPath);
+          if (active) setVideoMissing(!exists);
+        }
+      } finally {
+        if (active) setLoaded(true);
+      }
+    })();
     return () => {
       active = false;
     };
   }, [db, id]);
 
   const hasBurned = Boolean(session?.burnedVideoPath);
+  const resolvedClean = resolveVideoPath(session?.videoPath ?? null);
+  const resolvedBurned = resolveVideoPath(session?.burnedVideoPath ?? null);
   const videoSource =
-    session && hasBurned && showBurned
-      ? session.burnedVideoPath
-      : (session?.videoPath ?? null);
+    session && hasBurned && showBurned ? resolvedBurned : resolvedClean;
 
   const player = useVideoPlayer(videoSource, (p) => {
     p.loop = false;
@@ -109,7 +122,12 @@ export default function SessionDetailScreen() {
       }
 
       const wantBurnIn = await getBurnIn();
-      let exportPath = session.videoPath;
+      const sourceAbsPath = resolveVideoPath(session.videoPath);
+      if (!sourceAbsPath) {
+        Alert.alert('Cannot export', 'Original video path is missing.');
+        return;
+      }
+      let exportPath = sourceAbsPath;
       let updatedSession = session;
 
       if (wantBurnIn) {
@@ -121,15 +139,16 @@ export default function SessionDetailScreen() {
         if (cuesForBurn.length === 0) {
           // No prompts/timing — fall through and export clean.
         } else if (session.burnedVideoPath) {
-          exportPath = session.burnedVideoPath;
+          const resolvedBurnedAbs = resolveVideoPath(session.burnedVideoPath);
+          if (resolvedBurnedAbs) exportPath = resolvedBurnedAbs;
         } else {
           // Need to burn first.
           setExportProgress('Burning prompts…');
           const overlayPos = await getOverlayPosition();
-          const burnedPath = burnedVideoPathFor(session.id);
+          const burnedAbs = newBurnedVideoAbsolutePath(session.id);
           await burnIn({
-            sourceUri: session.videoPath,
-            destinationUri: burnedPath,
+            sourceUri: sourceAbsPath,
+            destinationUri: burnedAbs,
             cues: cuesForBurn.map((c) => ({
               text: c.text,
               startMs: c.startMs,
@@ -137,13 +156,13 @@ export default function SessionDetailScreen() {
             })),
             position: overlayPos,
           });
-          await setBurnedVideoPath(db, session.id, burnedPath);
+          await setBurnedVideoPath(db, session.id, burnedVideoFilenameFor(session.id));
           const refreshed = await getSession(db, session.id);
           if (refreshed) {
             setSession(refreshed);
             updatedSession = refreshed;
           }
-          exportPath = burnedPath;
+          exportPath = burnedAbs;
         }
       }
 
@@ -181,13 +200,18 @@ export default function SessionDetailScreen() {
         return;
       }
       const overlayPos = await getOverlayPosition();
-      const burnedPath = burnedVideoPathFor(session.id);
+      const burnedAbs = newBurnedVideoAbsolutePath(session.id);
+      const sourceAbs = resolveVideoPath(session.videoPath);
+      if (!sourceAbs) {
+        Alert.alert('Cannot burn', 'Original video path is missing.');
+        return;
+      }
       if (session.burnedVideoPath) {
         await deleteVideoFile(session.burnedVideoPath);
       }
       await burnIn({
-        sourceUri: session.videoPath,
-        destinationUri: burnedPath,
+        sourceUri: sourceAbs,
+        destinationUri: burnedAbs,
         cues: cuesForBurn.map((c) => ({
           text: c.text,
           startMs: c.startMs,
@@ -195,7 +219,7 @@ export default function SessionDetailScreen() {
         })),
         position: overlayPos,
       });
-      await setBurnedVideoPath(db, session.id, burnedPath);
+      await setBurnedVideoPath(db, session.id, burnedVideoFilenameFor(session.id));
       const refreshed = await getSession(db, session.id);
       if (refreshed) setSession(refreshed);
       Alert.alert(
@@ -262,13 +286,24 @@ export default function SessionDetailScreen() {
     <Screen scroll edges={['left', 'right', 'bottom']}>
       <Stack.Screen options={{ title: categoryById(session.category).label }} />
       <View style={styles.videoWrap}>
-        <VideoView
-          player={player}
-          style={styles.video}
-          allowsFullscreen
-          nativeControls
-          contentFit="contain"
-        />
+        {videoMissing ? (
+          <View style={styles.videoMissingOverlay}>
+            <Ionicons name="cloud-offline" size={32} color={colors.textMuted} />
+            <Text style={styles.videoMissingTitle}>Video file unavailable</Text>
+            <Text style={styles.videoMissingBody}>
+              The recording file is no longer on this device. iOS clears
+              files between certain reinstalls. The session metadata is intact.
+            </Text>
+          </View>
+        ) : (
+          <VideoView
+            player={player}
+            style={styles.video}
+            allowsFullscreen
+            nativeControls
+            contentFit="contain"
+          />
+        )}
       </View>
 
       {hasBurned ? (
@@ -408,6 +443,26 @@ const makeStyles = (colors: Palette) => {
       ...shadow.card,
     },
     video: { flex: 1 },
+    videoMissingOverlay: {
+      flex: 1,
+      backgroundColor: colors.bgElevated,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.sm,
+      padding: spacing.lg,
+    },
+    videoMissingTitle: {
+      color: colors.text,
+      fontSize: fontSize.md,
+      fontWeight: '700',
+      textAlign: 'center',
+    },
+    videoMissingBody: {
+      color: colors.textMuted,
+      fontSize: fontSize.sm,
+      textAlign: 'center',
+      lineHeight: fontSize.sm * 1.4,
+    },
     burnedToggle: {
       flexDirection: 'row',
       gap: spacing.xs,

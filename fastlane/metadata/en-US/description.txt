@@ -1,19 +1,31 @@
-Interview My Kid is a private, on-device app for recording short video interviews with your child — about a baseball game, a school day, or any moment worth keeping.
+Interview My Kid is a private, on-device app for recording short video interviews with your child. Use it after a baseball game, before school, at the end of a hard day, or for any moment worth keeping.
 
-Pick a topic. The app generates seven warm, age-appropriate cue cards using on-device Apple Intelligence (iOS 26+) or your own OpenRouter key. Edit the cards, then start recording. The cue card sits on YOUR screen as a teleprompter — read each one aloud while the camera captures your kid's answer. Tap Next to move on.
+Pick a topic. The app generates seven warm, age-appropriate cue cards using on-device Apple Intelligence (iOS 26+) or your own OpenRouter key. If neither is available, a curated bank of over 360 hand-written questions is always there. Edit the cards, save sets you love for next time, then start recording.
 
-When you're done, the session is saved — video plus the questions you used — in a private library on your device. Replay it later, or export to Photos with the questions burned into the video so the answers always have context.
+The cue card sits on YOUR screen as a teleprompter — read each question aloud while the camera captures your kid's answer. Tap Next to move to the next card. The recorded video is clean by default; the prompts only appear on your screen.
+
+When you're done, the session is saved with the questions you used, in a private library on your device. Replay it later, save sets to reuse, or export to Photos with the questions baked in so the answers always have context.
+
+CATEGORIES
+
+• Sports & Performance — pre-game, post-game, right after a play, season recap
+• School — before school, after school
+• Daily Life — end-of-day check-in
+• Special Moments — big feeling, milestone, after a trip
+• Free-form — open-ended for anything else
 
 FEATURES
 
-• AI-generated cue cards across four categories: pre-game, post-game, specific moment, and season-level reflection.
-• On-device Apple Intelligence support — no internet, no API key needed (iOS 26+ on supported iPhones).
-• Cloud generation via your own OpenRouter API key for top-quality questions.
-• Built-in question bank as a fallback so you can record without any setup.
-• Teleprompter overlay during recording — choose top, middle, or bottom position.
-• Optional burn-in: bake the question text into the exported video for sharing.
-• Six color themes including two light modes.
-• 100% local storage — your videos never leave your phone.
+• AI-generated cue cards across 11 categories with hand-curated fallbacks for each
+• On-device Apple Intelligence support — no internet, no API key needed (iOS 26+ on supported iPhones)
+• Cloud generation via your own OpenRouter API key for top-quality questions
+• Built-in question bank (360+ hand-written prompts) — always works, even fully offline
+• Save and reuse cue card sets — never regenerate the same set twice
+• Drag-to-reorder cue cards in the editor
+• Teleprompter overlay during recording — choose top, middle, or bottom position
+• Optional burn-in: bake question text into the exported video for sharing
+• Six color themes including two light modes
+• 100% local storage — your videos never leave your phone
 
 PRIVACY
 

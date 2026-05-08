@@ -47,6 +47,13 @@ const categoryIcon: Record<string, keyof typeof Ionicons.glyphMap> = {
   post_game: 'moon',
   moment: 'flash',
   season: 'calendar',
+  before_school: 'partly-sunny',
+  after_school: 'school',
+  end_of_day: 'bed',
+  big_feeling: 'heart',
+  milestone: 'trophy',
+  trip: 'airplane',
+  open: 'sparkles',
 };
 
 export default function HomeScreen() {
