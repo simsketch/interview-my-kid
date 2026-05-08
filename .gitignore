@@ -50,3 +50,5 @@ fastlane/screenshots/**/*.jpg
 # generated native folders
 /ios
 /android
+*.cer
+*.p12
