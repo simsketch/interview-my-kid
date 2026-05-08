@@ -1,0 +1,141 @@
+# Fastfile — TestFlight + App Store ship lanes for Interview My Kid.
+#
+# Auth uses an App Store Connect API key (works with 2FA, no interactive prompts).
+# See docs/SUBMITTING.md for setup.
+#
+# Run lanes from project root:
+#   bundle exec fastlane beta
+#   bundle exec fastlane release
+#   bundle exec fastlane metadata
+
+default_platform(:ios)
+
+WORKSPACE = "ios/InterviewMyKid.xcworkspace"
+XCODEPROJ = "ios/InterviewMyKid.xcodeproj"
+SCHEME    = "InterviewMyKid"
+APP_ID    = "com.simsketch.interviewmykid"
+
+before_all do
+  env_path = File.expand_path("../fastlane/.env", __dir__)
+  Dotenv.load(env_path) if File.exist?(env_path)
+end
+
+platform :ios do
+  desc "Authenticate with App Store Connect using an API key (.p8)"
+  private_lane :asc_login do
+    api_key_path = ENV["ASC_KEY_FILEPATH"]
+    api_key_id   = ENV["ASC_KEY_ID"]
+    issuer_id    = ENV["ASC_ISSUER_ID"]
+    UI.user_error!("ASC_KEY_FILEPATH/ASC_KEY_ID/ASC_ISSUER_ID env vars are required (see fastlane/.env.template)") unless api_key_path && api_key_id && issuer_id
+    app_store_connect_api_key(
+      key_id: api_key_id,
+      issuer_id: issuer_id,
+      key_filepath: api_key_path,
+      duration: 1200,
+      in_house: false
+    )
+  end
+
+  desc "Run expo prebuild so the iOS project + Pods are up to date before building"
+  private_lane :expo_prebuild do
+    sh("cd .. && npx expo prebuild --platform ios --no-install")
+    sh("cd ../ios && pod install")
+  end
+
+  desc "Create the App Store Connect app via API (bundle ID must already exist in dev portal)"
+  lane :bootstrap do
+    asc_login
+    # skip_devcenter avoids the legacy Spaceship login that needs 2FA — bundle ID
+    # is registered automatically when Xcode does automatic signing on first build,
+    # or you can register manually at developer.apple.com/account/resources/identifiers.
+    produce(
+      app_identifier: APP_ID,
+      app_name: "Interview My Kid",
+      language: "English (U.S.)",
+      app_version: "1.0.0",
+      sku: "interview-my-kid",
+      skip_devcenter: true,
+      enable_services: {}
+    )
+    UI.success("✅ App Store Connect app exists.")
+  end
+
+  desc "Increment iOS build number to (latest TestFlight + 1)"
+  private_lane :bump_build do
+    asc_login
+    latest = latest_testflight_build_number(app_identifier: APP_ID, initial_build_number: 0)
+    next_build = latest.to_i + 1
+    increment_build_number(xcodeproj: XCODEPROJ, build_number: next_build)
+    UI.message("Build number bumped to #{next_build}")
+  end
+
+  desc "Build the iOS app for the App Store and produce an .ipa in build/"
+  private_lane :build_ipa do
+    output_dir = File.expand_path("../build", __dir__)
+    FileUtils.mkdir_p(output_dir)
+    build_app(
+      workspace: WORKSPACE,
+      scheme: SCHEME,
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: output_dir,
+      output_name: "InterviewMyKid.ipa",
+      clean: true,
+      include_bitcode: false,
+      include_symbols: true,
+      silent: false
+    )
+  end
+
+  desc "Build and upload a build to TestFlight (no App Store review submission)"
+  lane :beta do
+    asc_login
+    expo_prebuild
+    bump_build
+    build_ipa
+    upload_to_testflight(
+      app_identifier: APP_ID,
+      skip_waiting_for_build_processing: false,
+      changelog: ENV["TESTFLIGHT_CHANGELOG"] || "Internal build."
+    )
+    UI.success("✅ Uploaded to TestFlight. Watch ASC for processing status.")
+  end
+
+  desc "Push App Store metadata + screenshots to ASC without building (precheck)"
+  lane :metadata do
+    asc_login
+    upload_to_app_store(
+      app_identifier: APP_ID,
+      skip_binary_upload: true,
+      skip_screenshots: false,
+      skip_metadata: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      submit_for_review: false
+    )
+  end
+
+  desc "Build, upload, and submit a build for App Store review"
+  lane :release do
+    asc_login
+    expo_prebuild
+    bump_build
+    build_ipa
+    upload_to_app_store(
+      app_identifier: APP_ID,
+      ipa: File.expand_path("../build/InterviewMyKid.ipa", __dir__),
+      skip_screenshots: false,
+      skip_metadata: false,
+      submit_for_review: true,
+      automatic_release: false,
+      force: true,
+      submission_information: {
+        add_id_info_uses_idfa: false,
+        export_compliance_uses_encryption: false,
+        export_compliance_encryption_updated: false
+      },
+      precheck_include_in_app_purchases: false
+    )
+    UI.success("✅ Submitted to App Store Review. Watch your email + ASC.")
+  end
+end

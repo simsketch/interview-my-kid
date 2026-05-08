@@ -1,0 +1,7 @@
+# App identifiers and team config — non-secret values are committed.
+# Secrets (API key file, key id, issuer id) are loaded from .env (gitignored).
+
+app_identifier "com.simsketch.interviewmykid"
+apple_id ENV["FASTLANE_APPLE_ID"]
+team_id ENV["FASTLANE_TEAM_ID"]
+itc_team_id ENV["FASTLANE_ITC_TEAM_ID"]

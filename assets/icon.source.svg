@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0abfc"/>
+      <stop offset="100%" stop-color="#fb7185"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feOffset dy="12" result="off"/>
+      <feFlood flood-color="rgba(120, 30, 80, 0.3)"/>
+      <feComposite in2="off" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- background (full bleed, no rounding — iOS masks it) -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- decorative confetti dots -->
+  <g opacity="0.4">
+    <circle cx="180" cy="170" r="14" fill="#67e8f9"/>
+    <circle cx="880" cy="220" r="10" fill="#fde047"/>
+    <circle cx="120" cy="780" r="12" fill="#fde047"/>
+    <circle cx="900" cy="860" r="16" fill="#67e8f9"/>
+    <circle cx="280" cy="900" r="8" fill="#bef264"/>
+    <circle cx="780" cy="120" r="9" fill="#bef264"/>
+  </g>
+
+  <!-- speech bubble with shadow -->
+  <g filter="url(#softShadow)">
+    <path d="M 250 320
+             C 250 270, 290 230, 340 230
+             L 684 230
+             C 734 230, 774 270, 774 320
+             L 774 600
+             C 774 650, 734 690, 684 690
+             L 540 690
+             L 425 790
+             L 450 690
+             L 340 690
+             C 290 690, 250 650, 250 600
+             Z" fill="#ffffff"/>
+  </g>
+
+  <!-- record dot inside bubble -->
+  <circle cx="512" cy="455" r="68" fill="#ef4444"/>
+  <!-- inner highlight for record dot -->
+  <circle cx="488" cy="430" r="20" fill="rgba(255, 255, 255, 0.45)"/>
+</svg>

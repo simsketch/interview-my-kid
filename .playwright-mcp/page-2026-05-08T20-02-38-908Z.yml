@@ -1,0 +1,402 @@
+- generic [ref=e1]:
+  - banner "App Store Connect" [ref=e3]:
+    - generic [ref=e4]:
+      - heading "App Store Connect" [level=1] [ref=e6]:
+        - link "App Store Connect" [ref=e7] [cursor=pointer]:
+          - /url: /
+      - navigation "Global" [ref=e8]:
+        - list [ref=e10]:
+          - listitem [ref=e11]:
+            - link "Apps" [ref=e12] [cursor=pointer]:
+              - /url: /apps
+          - listitem [ref=e13]:
+            - link "Trends" [ref=e14] [cursor=pointer]:
+              - /url: /trends
+          - listitem [ref=e15]:
+            - link "Reports" [ref=e16] [cursor=pointer]:
+              - /url: /itc/payments_and_financial_reports
+          - listitem [ref=e17]:
+            - link "Business" [ref=e18] [cursor=pointer]:
+              - /url: /business
+          - listitem [ref=e19]:
+            - link "Users and Access" [ref=e20] [cursor=pointer]:
+              - /url: /access/users
+      - button "Elon Zito a2zCreative, LLC Account name menu" [ref=e22] [cursor=pointer]:
+        - generic:
+          - generic: Elon Zito
+          - generic: a2zCreative, LLC
+          - img [ref=e23]
+  - generic [ref=e28]:
+    - main [ref=e29]:
+      - generic [ref=e31]:
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - generic [ref=e35]:
+              - heading "Apps" [level=2] [ref=e36]
+              - generic [ref=e37]:
+                - button "New App" [ref=e39] [cursor=pointer]:
+                  - img [ref=e40]
+                - button "more" [ref=e43] [cursor=pointer]:
+                  - img "Icons/Ellipsis" [ref=e45]
+            - generic [ref=e50]:
+              - button "Search" [ref=e53] [cursor=pointer]:
+                - img [ref=e54]
+              - generic [ref=e56]:
+                - button "All Types" [ref=e58] [cursor=pointer]:
+                  - text: All Types
+                  - img [ref=e59]
+                - button "All Statuses" [ref=e62] [cursor=pointer]:
+                  - text: All Statuses
+                  - img [ref=e63]
+          - separator [ref=e65]
+        - grid "grid" [ref=e68]:
+          - rowgroup [ref=e69]:
+            - row "Dev Toolbox App Dev Toolbox App Dev Toolbox App macOS 0.1.0 Rejected Pipeline Toolbox Pipeline Toolbox Pipeline Toolbox macOS 1.0.0 Waiting for Review KidCash TV View App Review Issues & Messages KidCash TV View App Review Issues & Messages KidCash TV tvOS 1.0 Rejected" [ref=e70]:
+              - generic [ref=e71]:
+                - gridcell "Dev Toolbox App Dev Toolbox App Dev Toolbox App macOS 0.1.0 Rejected" [ref=e72]:
+                  - generic [ref=e649] [cursor=pointer]:
+                    - link "Dev Toolbox App" [ref=e651]:
+                      - /url: /apps/6765916940/distribution
+                      - generic "Dev Toolbox App" [ref=e652]:
+                        - img "Dev Toolbox App" [ref=e653]
+                    - generic [ref=e654]:
+                      - paragraph [ref=e655]:
+                        - link "Dev Toolbox App" [ref=e656]:
+                          - /url: /apps/6765916940/distribution
+                      - list:
+                        - listitem:
+                          - paragraph:
+                            - link "Dev Toolbox App macOS 0.1.0 Rejected" [ref=e657]:
+                              - /url: /apps/6765916940/distribution/macos/version/inflight
+                              - img [ref=e658]
+                              - text: macOS 0.1.0 Rejected
+                - gridcell "Pipeline Toolbox Pipeline Toolbox Pipeline Toolbox macOS 1.0.0 Waiting for Review" [ref=e85]:
+                  - generic [ref=e661] [cursor=pointer]:
+                    - link "Pipeline Toolbox" [ref=e663]:
+                      - /url: /apps/6767105801/distribution
+                      - generic "Pipeline Toolbox" [ref=e664]:
+                        - img "Pipeline Toolbox" [ref=e665]
+                    - generic [ref=e666]:
+                      - paragraph [ref=e667]:
+                        - link "Pipeline Toolbox" [ref=e668]:
+                          - /url: /apps/6767105801/distribution
+                      - list:
+                        - listitem:
+                          - paragraph:
+                            - link "Pipeline Toolbox macOS 1.0.0 Waiting for Review" [ref=e669]:
+                              - /url: /apps/6767105801/distribution/macos/version/inflight
+                              - img [ref=e670]
+                              - text: macOS 1.0.0 Waiting for Review
+                - gridcell "KidCash TV View App Review Issues & Messages KidCash TV View App Review Issues & Messages KidCash TV tvOS 1.0 Rejected" [ref=e98]:
+                  - generic [ref=e673] [cursor=pointer]:
+                    - generic [ref=e674]:
+                      - link "KidCash TV" [ref=e675]:
+                        - /url: /apps/6766630196/distribution
+                        - generic "KidCash TV" [ref=e676]:
+                          - img "KidCash TV" [ref=e677]
+                      - button "View App Review Issues & Messages" [ref=e678]:
+                        - img [ref=e679]
+                    - generic [ref=e681]:
+                      - paragraph [ref=e682]:
+                        - link "KidCash TV" [ref=e683]:
+                          - /url: /apps/6766630196/distribution
+                      - paragraph [ref=e684]:
+                        - link "View App Review Issues & Messages" [ref=e685]:
+                          - /url: /apps/6766630196/distribution/reviewsubmissions
+                          - text: View App Review Issues & Messages
+                          - img [ref=e686]
+                      - list:
+                        - listitem:
+                          - paragraph:
+                            - link "KidCash TV tvOS 1.0 Rejected" [ref=e688]:
+                              - /url: /apps/6766630196/distribution/tvos/version/inflight
+                              - img [ref=e689]
+                              - text: tvOS 1.0 Rejected
+              - separator [ref=e118]
+            - row "KidCash Vision View App Review Issues & Messages KidCash Vision View App Review Issues & Messages KidCash Vision visionOS 1.0 Rejected KidCash App KidCash App KidCash App iOS 1.0 Ready for Distribution Greenlight Dining View App Review Issues & Messages Greenlight Dining View App Review Issues & Messages Greenlight Dining iOS 1.2.2 Prepare for Submission" [ref=e119]:
+              - generic [ref=e120]:
+                - gridcell "KidCash Vision View App Review Issues & Messages KidCash Vision View App Review Issues & Messages KidCash Vision visionOS 1.0 Rejected" [ref=e121]:
+                  - generic [ref=e692] [cursor=pointer]:
+                    - generic [ref=e693]:
+                      - link "KidCash Vision" [ref=e694]:
+                        - /url: /apps/6766630355/distribution
+                        - generic "KidCash Vision" [ref=e695]:
+                          - img "KidCash Vision" [ref=e696]
+                      - button "View App Review Issues & Messages" [ref=e697]:
+                        - img [ref=e698]
+                    - generic [ref=e700]:
+                      - paragraph [ref=e701]:
+                        - link "KidCash Vision" [ref=e702]:
+                          - /url: /apps/6766630355/distribution
+                      - paragraph [ref=e703]:
+                        - link "View App Review Issues & Messages" [ref=e704]:
+                          - /url: /apps/6766630355/distribution/reviewsubmissions
+                          - text: View App Review Issues & Messages
+                          - img [ref=e705]
+                      - list:
+                        - listitem:
+                          - paragraph:
+                            - link "KidCash Vision visionOS 1.0 Rejected" [ref=e707]:
+                              - /url: /apps/6766630355/distribution/visionos/version/inflight
+                              - img [ref=e708]
+                              - text: visionOS 1.0 Rejected
+                - gridcell "KidCash App KidCash App KidCash App iOS 1.0 Ready for Distribution" [ref=e141]:
+                  - generic [ref=e711] [cursor=pointer]:
+                    - link "KidCash App" [ref=e713]:
+                      - /url: /apps/6760686549/distribution
+                      - generic "KidCash App" [ref=e714]:
+                        - img "KidCash App" [ref=e715]
+                    - generic [ref=e716]:
+                      - paragraph [ref=e717]:
+                        - link "KidCash App" [ref=e718]:
+                          - /url: /apps/6760686549/distribution
+                      - list:
+                        - listitem:
+                          - paragraph:
+                            - link "KidCash App iOS 1.0 Ready for Distribution" [ref=e719]:
+                              - /url: /apps/6760686549/distribution/ios/version/deliverable
+                              - img [ref=e720]
+                              - text: iOS 1.0 Ready for Distribution
+                - gridcell "Greenlight Dining View App Review Issues & Messages Greenlight Dining View App Review Issues & Messages Greenlight Dining iOS 1.2.2 Prepare for Submission" [ref=e154]:
+                  - generic [ref=e723] [cursor=pointer]:
+                    - generic [ref=e724]:
+                      - link "Greenlight Dining" [ref=e725]:
+                        - /url: /apps/1424448305/distribution
+                        - generic "Greenlight Dining" [ref=e726]:
+                          - img "Greenlight Dining" [ref=e727]
+                      - button "View App Review Issues & Messages" [ref=e728]:
+                        - img [ref=e729]
+                    - generic [ref=e731]:
+                      - paragraph [ref=e732]:
+                        - link "Greenlight Dining" [ref=e733]:
+                          - /url: /apps/1424448305/distribution
+                      - paragraph [ref=e734]:
+                        - link "View App Review Issues & Messages" [ref=e735]:
+                          - /url: /apps/1424448305/distribution/reviewsubmissions
+                          - text: View App Review Issues & Messages
+                          - img [ref=e736]
+                      - list:
+                        - listitem:
+                          - paragraph:
+                            - link "Greenlight Dining iOS 1.2.2 Prepare for Submission" [ref=e738]:
+                              - /url: /apps/1424448305/distribution/ios/version/inflight
+                              - img [ref=e739]
+                              - text: iOS 1.2.2 Prepare for Submission
+              - separator [ref=e174]
+            - row "Cutetitos Stickers View App Review Issues & Messages Cutetitos Stickers View App Review Issues & Messages Cutetitos Stickers iOS 1.0 Ready for Distribution Fresh and Clean Detailing View App Review Issues & Messages Fresh and Clean Detailing View App Review Issues & Messages Removed from App Store Cutetitos Match Game Cutetitos Match Game Cutetitos Match Game iOS 1.0 Prepare for Submission" [ref=e175]:
+              - generic [ref=e176]:
+                - gridcell "Cutetitos Stickers View App Review Issues & Messages Cutetitos Stickers View App Review Issues & Messages Cutetitos Stickers iOS 1.0 Ready for Distribution" [ref=e177]:
+                  - generic [ref=e742] [cursor=pointer]:
+                    - generic [ref=e743]:
+                      - link "Cutetitos Stickers" [ref=e744]:
+                        - /url: /apps/1436535267/distribution
+                        - generic "Cutetitos Stickers" [ref=e745]:
+                          - img "Cutetitos Stickers" [ref=e746]
+                      - button "View App Review Issues & Messages" [ref=e747]:
+                        - img [ref=e748]
+                    - generic [ref=e750]:
+                      - paragraph [ref=e751]:
+                        - link "Cutetitos Stickers" [ref=e752]:
+                          - /url: /apps/1436535267/distribution
+                      - paragraph [ref=e753]:
+                        - link "View App Review Issues & Messages" [ref=e754]:
+                          - /url: /apps/1436535267/distribution/reviewsubmissions
+                          - text: View App Review Issues & Messages
+                          - img [ref=e755]
+                      - list:
+                        - listitem:
+                          - paragraph:
+                            - link "Cutetitos Stickers iOS 1.0 Ready for Distribution" [ref=e757]:
+                              - /url: /apps/1436535267/distribution/ios/version/deliverable
+                              - img [ref=e758]
+                              - text: iOS 1.0 Ready for Distribution
+                - gridcell "Fresh and Clean Detailing View App Review Issues & Messages Fresh and Clean Detailing View App Review Issues & Messages Removed from App Store" [ref=e197]:
+                  - generic [ref=e761] [cursor=pointer]:
+                    - generic [ref=e762]:
+                      - link "Fresh and Clean Detailing" [ref=e763]:
+                        - /url: /apps/1072370382/distribution
+                        - generic "Fresh and Clean Detailing" [ref=e764]:
+                          - img "Fresh and Clean Detailing" [ref=e765]
+                      - button "View App Review Issues & Messages" [ref=e766]:
+                        - img [ref=e767]
+                    - generic [ref=e769]:
+                      - paragraph [ref=e770]:
+                        - link "Fresh and Clean Detailing" [ref=e771]:
+                          - /url: /apps/1072370382/distribution
+                      - paragraph [ref=e772]:
+                        - link "View App Review Issues & Messages" [ref=e773]:
+                          - /url: /apps/1072370382/distribution/reviewsubmissions
+                          - text: View App Review Issues & Messages
+                          - img [ref=e774]
+                      - paragraph [ref=e776]: Removed from App Store
+                - gridcell "Cutetitos Match Game Cutetitos Match Game Cutetitos Match Game iOS 1.0 Prepare for Submission" [ref=e215]:
+                  - generic [ref=e778] [cursor=pointer]:
+                    - link "Cutetitos Match Game" [ref=e780]:
+                      - /url: /apps/1435569392/distribution
+                      - generic "Cutetitos Match Game" [ref=e781]:
+                        - img "Cutetitos Match Game" [ref=e782]
+                    - generic [ref=e783]:
+                      - paragraph [ref=e784]:
+                        - link "Cutetitos Match Game" [ref=e785]:
+                          - /url: /apps/1435569392/distribution
+                      - list:
+                        - listitem:
+                          - paragraph:
+                            - link "Cutetitos Match Game iOS 1.0 Prepare for Submission" [ref=e786]:
+                              - /url: /apps/1435569392/distribution/ios/version/inflight
+                              - img [ref=e787]
+                              - text: iOS 1.0 Prepare for Submission
+              - separator [ref=e228]
+            - row "Poppa Pill Crush Game Poppa Pill Crush Game Poppa Pill Crush Game iOS 1.0 Prepare for Submission" [ref=e229]:
+              - gridcell "Poppa Pill Crush Game Poppa Pill Crush Game Poppa Pill Crush Game iOS 1.0 Prepare for Submission" [ref=e231]:
+                - generic [ref=e790] [cursor=pointer]:
+                  - link "Poppa Pill Crush Game" [ref=e792]:
+                    - /url: /apps/889598346/distribution
+                    - generic "Poppa Pill Crush Game" [ref=e793]:
+                      - img "Poppa Pill Crush Game" [ref=e794]
+                  - generic [ref=e795]:
+                    - paragraph [ref=e796]:
+                      - link "Poppa Pill Crush Game" [ref=e797]:
+                        - /url: /apps/889598346/distribution
+                    - list:
+                      - listitem:
+                        - paragraph:
+                          - link "Poppa Pill Crush Game iOS 1.0 Prepare for Submission" [ref=e798]:
+                            - /url: /apps/889598346/distribution/ios/version/inflight
+                            - img [ref=e799]
+                            - text: iOS 1.0 Prepare for Submission
+              - separator [ref=e244]
+    - dialog "New App" [ref=e420]:
+      - document [ref=e421]:
+        - generic [ref=e422]:
+          - heading "New App" [level=2] [ref=e423]
+          - generic [ref=e424]:
+            - generic [ref=e425]:
+              - generic [ref=e427]:
+                - generic [ref=e428]: Platforms
+                - button "More information" [ref=e430] [cursor=pointer]: "?"
+              - group "Select platforms" [ref=e431]:
+                - generic [ref=e432]:
+                  - checkbox "iOS" [checked] [ref=e433]
+                  - text: iOS
+                - generic [ref=e434]:
+                  - checkbox "macOS" [ref=e435]
+                  - text: macOS
+                - generic [ref=e436]:
+                  - checkbox "tvOS" [ref=e437]
+                  - text: tvOS
+                - generic [ref=e438]:
+                  - checkbox "visionOS" [ref=e439]
+                  - text: visionOS
+            - generic [ref=e440]:
+              - generic [ref=e442]:
+                - generic [ref=e443]: Name
+                - button "More information" [ref=e445] [cursor=pointer]: "?"
+              - textbox "Name" [ref=e447]: Interview My Kid
+              - status "Characters remaining" [ref=e449]: "14"
+            - generic [ref=e450]:
+              - generic [ref=e452]:
+                - generic [ref=e453]: Primary Language
+                - button "More information" [ref=e455] [cursor=pointer]: "?"
+              - combobox "Primary Language" [ref=e457]:
+                - option "Choose" [disabled]
+                - option "Arabic"
+                - option "Bangla"
+                - option "Catalan"
+                - option "Chinese (Simplified)"
+                - option "Chinese (Traditional)"
+                - option "Croatian"
+                - option "Czech"
+                - option "Danish"
+                - option "Dutch"
+                - option "English (Australia)"
+                - option "English (Canada)"
+                - option "English (U.K.)"
+                - option "English (U.S.)" [selected]
+                - option "Finnish"
+                - option "French"
+                - option "French (Canada)"
+                - option "German"
+                - option "Greek"
+                - option "Gujarati"
+                - option "Hebrew"
+                - option "Hindi"
+                - option "Hungarian"
+                - option "Indonesian"
+                - option "Italian"
+                - option "Japanese"
+                - option "Kannada"
+                - option "Korean"
+                - option "Malay"
+                - option "Malayalam"
+                - option "Marathi"
+                - option "Norwegian"
+                - option "Odia"
+                - option "Polish"
+                - option "Portuguese (Brazil)"
+                - option "Portuguese (Portugal)"
+                - option "Punjabi"
+                - option "Romanian"
+                - option "Russian"
+                - option "Slovak"
+                - option "Slovenian"
+                - option "Spanish (Mexico)"
+                - option "Spanish (Spain)"
+                - option "Swedish"
+                - option "Tamil"
+                - option "Telugu"
+                - option "Thai"
+                - option "Turkish"
+                - option "Ukrainian"
+                - option "Urdu"
+                - option "Vietnamese"
+            - generic [ref=e458]:
+              - generic [ref=e460]:
+                - generic [ref=e461]: Bundle ID
+                - button "More information" [ref=e463] [cursor=pointer]: "?"
+              - combobox "Bundle ID" [ref=e465]:
+                - option "Choose" [disabled]
+                - option "8836WUYZD5-io-panda2-cutetitosmatchgame - 8836WUYZD5.io.panda2.cutetitosmatchgame"
+                - option "cutetitosmatchgame - cutetitosmatchgame"
+                - option "InterviewMyKid - com.simsketch.interviewmykid" [selected]
+                - option "io-basicfun-cutetitosmatchgame - io.basicfun.cutetitosmatchgame"
+                - option "XC com basicfun Cutetitos StickerPackExtension - com.basicfun.Cutetitos.StickerPackExtension"
+                - option "XC com kidcashapp app KidCashWidget - com.kidcashapp.app.KidCashWidget"
+                - option "XC com kidcashapp app watchkitapp - com.kidcashapp.app.watchkitapp"
+                - option "Xcode iOS App ID com a2zcreative impulse - com.a2zcreative.impulse"
+            - generic [ref=e469]:
+              - generic [ref=e471]:
+                - generic [ref=e472]: SKU
+                - button "More information" [ref=e474] [cursor=pointer]: "?"
+              - textbox "SKU" [ref=e476]: interview-my-kid
+            - generic [ref=e477]:
+              - generic [ref=e479]:
+                - generic [ref=e480]: User Access
+                - button "More information" [ref=e482] [cursor=pointer]: "?"
+              - generic [ref=e484]:
+                - generic [ref=e485]:
+                  - radio "Limited Access" [disabled] [ref=e486]
+                  - text: Limited Access
+                - generic [ref=e487]:
+                  - radio "Full Access" [checked] [active] [ref=e488]
+                  - text: Full Access
+        - generic [ref=e490]:
+          - button "Cancel" [ref=e492] [cursor=pointer]
+          - button "Create" [ref=e494] [cursor=pointer]
+  - contentinfo [ref=e246]:
+    - generic [ref=e247]:
+      - list [ref=e248]:
+        - listitem [ref=e249]: App Store Connect
+      - list [ref=e250]:
+        - listitem [ref=e251]: Copyright © 2026 Apple Inc. All rights reserved. |
+        - listitem [ref=e252]:
+          - link "Terms of Service" [ref=e253] [cursor=pointer]:
+            - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
+          - text: "|"
+        - listitem [ref=e254]:
+          - link "Privacy Policy" [ref=e255] [cursor=pointer]:
+            - /url: https://www.apple.com/legal/privacy
+          - text: "|"
+        - listitem [ref=e256]:
+          - link "Contact Us" [ref=e257] [cursor=pointer]:
+            - /url: /contact-us

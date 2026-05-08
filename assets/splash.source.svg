@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bubble" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff5d8f"/>
+      <stop offset="100%" stop-color="#fb7185"/>
+    </linearGradient>
+  </defs>
+  <path d="M 250 320
+           C 250 270, 290 230, 340 230
+           L 684 230
+           C 734 230, 774 270, 774 320
+           L 774 600
+           C 774 650, 734 690, 684 690
+           L 540 690
+           L 425 790
+           L 450 690
+           L 340 690
+           C 290 690, 250 650, 250 600
+           Z" fill="url(#bubble)"/>
+  <circle cx="512" cy="455" r="68" fill="#ffffff"/>
+</svg>

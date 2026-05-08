@@ -1,0 +1,20 @@
+Interview My Kid is a private, on-device app for recording short video interviews with your child — about a baseball game, a school day, or any moment worth keeping.
+
+Pick a topic. The app generates seven warm, age-appropriate cue cards using on-device Apple Intelligence (iOS 26+) or your own OpenRouter key. Edit the cards, then start recording. The cue card sits on YOUR screen as a teleprompter — read each one aloud while the camera captures your kid's answer. Tap Next to move on.
+
+When you're done, the session is saved — video plus the questions you used — in a private library on your device. Replay it later, or export to Photos with the questions burned into the video so the answers always have context.
+
+FEATURES
+
+• AI-generated cue cards across four categories: pre-game, post-game, specific moment, and season-level reflection.
+• On-device Apple Intelligence support — no internet, no API key needed (iOS 26+ on supported iPhones).
+• Cloud generation via your own OpenRouter API key for top-quality questions.
+• Built-in question bank as a fallback so you can record without any setup.
+• Teleprompter overlay during recording — choose top, middle, or bottom position.
+• Optional burn-in: bake the question text into the exported video for sharing.
+• Six color themes including two light modes.
+• 100% local storage — your videos never leave your phone.
+
+PRIVACY
+
+Interview My Kid stores everything on your device. The app does not collect, transmit, or share your videos, prompts, or personal information. The only outbound network traffic is to OpenRouter (only when you choose Cloud generation) using an API key you provide.

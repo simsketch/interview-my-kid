@@ -1,0 +1,7 @@
+{
+  "name": "video-overlay",
+  "version": "1.0.0",
+  "description": "AVFoundation video text overlay burner for Interview My Kid",
+  "main": "index.ts",
+  "private": true
+}

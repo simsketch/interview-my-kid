@@ -1,0 +1,7 @@
+{
+  "name": "foundation-models",
+  "version": "1.0.0",
+  "description": "Apple FoundationModels bridge for Interview My Kid",
+  "main": "index.ts",
+  "private": true
+}
