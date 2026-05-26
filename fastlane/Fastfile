@@ -108,6 +108,26 @@ platform :ios do
     )
   end
 
+  desc "Add an external tester to a TestFlight group (creates group if missing)"
+  lane :add_tester do |options|
+    asc_login
+    email = options[:email] || ENV["FASTLANE_APPLE_ID"]
+    group = options[:group] || "Family"
+    first = options[:first_name] || "Test"
+    last = options[:last_name] || "User"
+    UI.user_error!("email required: bundle exec fastlane add_tester email:foo@bar.com") if email.nil? || email.empty?
+    pilot(
+      app_identifier: APP_ID,
+      distribute_only: true,
+      groups: [group],
+      first_name: first,
+      last_name: last,
+      email: email,
+      notify_external_testers: true
+    )
+    UI.success("✅ Added #{email} to TestFlight group '#{group}'.")
+  end
+
   desc "Build and upload a build to TestFlight (no App Store review submission)"
   lane :beta do
     asc_login
@@ -160,28 +180,65 @@ platform :ios do
     )
   end
 
-  desc "Build, upload, and submit a build for App Store review"
+  desc "Build and upload the IPA to TestFlight, then push metadata + screenshots, then submit"
   lane :release do
     asc_login
     expo_prebuild
     ensure_signing
     bump_build
     build_ipa
-    upload_to_app_store(
+    # Stage 1: get the binary up via TestFlight (avoids deliver's metadata bug for new apps)
+    upload_to_testflight(
       app_identifier: APP_ID,
       ipa: File.expand_path("../build/InterviewMyKid.ipa", __dir__),
-      skip_screenshots: false,
-      skip_metadata: false,
-      submit_for_review: true,
-      automatic_release: false,
-      force: true,
-      submission_information: {
-        add_id_info_uses_idfa: false,
-        export_compliance_uses_encryption: false,
-        export_compliance_encryption_updated: false
-      },
-      precheck_include_in_app_purchases: false
+      skip_waiting_for_build_processing: false,
+      changelog: ENV["TESTFLIGHT_CHANGELOG"] || "Latest build."
     )
-    UI.success("✅ Submitted to App Store Review. Watch your email + ASC.")
+    # Stage 2: push screenshots (skip_metadata avoids the review_attachment_file bug)
+    upload_to_app_store(
+      app_identifier: APP_ID,
+      skip_binary_upload: true,
+      skip_metadata: true,
+      skip_screenshots: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      submit_for_review: false
+    )
+    # Stage 3: try to push text metadata + submit for review.
+    # If this fails (known fastlane bug for brand-new apps), the build is
+    # still on TestFlight + screenshots are uploaded — only the App Store
+    # review submission is missing, which the user can do manually in ASC.
+    begin
+      upload_to_app_store(
+        app_identifier: APP_ID,
+        skip_binary_upload: true,
+        skip_metadata: false,
+        skip_screenshots: true,
+        submit_for_review: true,
+        automatic_release: false,
+        force: true,
+        app_review_information: {
+          first_name: "Elon",
+          last_name: "Zito",
+          phone_number: "+1 555-555-5555",
+          email_address: ENV["FASTLANE_APPLE_ID"],
+          demo_user: "",
+          demo_password: "",
+          notes: "Interview My Kid stores everything on device. The Cloud AI option requires the user to provide their own OpenRouter API key in Settings — to test, leave AI Provider as 'Auto' and the built-in question bank fallback will be used. To test on-device generation, run on iOS 26 with Apple Intelligence enabled."
+        },
+        submission_information: {
+          add_id_info_uses_idfa: false,
+          export_compliance_uses_encryption: false,
+          export_compliance_encryption_updated: false
+        },
+        precheck_include_in_app_purchases: false
+      )
+      UI.success("✅ Submitted to App Store Review. Watch your email + ASC.")
+    rescue => err
+      UI.important("Metadata + submit failed: #{err.message}")
+      UI.important("⚠ Build is on TestFlight and screenshots are pushed.")
+      UI.important("⚠ Finish App Privacy + Age Rating in App Store Connect web UI,")
+      UI.important("⚠ then click Submit for Review there.")
+    end
   end
 end

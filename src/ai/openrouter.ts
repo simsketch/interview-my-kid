@@ -25,6 +25,7 @@ export async function generateViaOpenRouter(opts: {
   category: CategoryId;
   context: string | null;
   count: number;
+  targetAge: number | null;
   signal?: AbortSignal;
 }): Promise<string[]> {
   const apiKey = await getApiKey();
@@ -35,7 +36,14 @@ export async function generateViaOpenRouter(opts: {
   const body = {
     model: model || DEFAULT_MODEL,
     messages: [
-      { role: 'system', content: buildSystemPrompt({ category: opts.category, kidName }) },
+      {
+        role: 'system',
+        content: buildSystemPrompt({
+          category: opts.category,
+          kidName,
+          targetAge: opts.targetAge,
+        }),
+      },
       { role: 'user', content: buildUserPrompt(opts.context, opts.count) },
     ],
     response_format: { type: 'json_object' },

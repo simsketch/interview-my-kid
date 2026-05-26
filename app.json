@@ -2,7 +2,7 @@
   "expo": {
     "name": "Interview My Kid",
     "slug": "interview-my-kid",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "scheme": "interviewmykid",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

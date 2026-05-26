@@ -24,9 +24,14 @@ export async function generateViaFoundation(opts: {
   category: CategoryId;
   context: string | null;
   count: number;
+  targetAge: number | null;
 }): Promise<string[]> {
   const kidName = await getKidName();
-  const system = buildSystemPrompt({ category: opts.category, kidName });
+  const system = buildSystemPrompt({
+    category: opts.category,
+    kidName,
+    targetAge: opts.targetAge,
+  });
   const user = buildUserPrompt(opts.context, opts.count);
   let raw: string;
   try {

@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Create the App Store Connect app via API (bundle ID must already exist in dev portal)
 
+### ios add_tester
+
+```sh
+[bundle exec] fastlane ios add_tester
+```
+
+Add an external tester to a TestFlight group (creates group if missing)
+
 ### ios beta
 
 ```sh
@@ -53,7 +61,7 @@ Push App Store metadata text + screenshots to ASC (requires existing review subm
 [bundle exec] fastlane ios release
 ```
 
-Build, upload, and submit a build for App Store review
+Build and upload the IPA to TestFlight, then push metadata + screenshots, then submit
 
 ----
 

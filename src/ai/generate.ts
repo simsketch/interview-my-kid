@@ -1,5 +1,12 @@
 import type { CategoryId } from '../categories';
-import { getApiKey, getProvider, type ProviderPreference } from '../storage/keychain';
+import {
+  DEFAULT_QUESTION_COUNT,
+  getApiKey,
+  getProvider,
+  getQuestionCount,
+  getTargetAge,
+  type ProviderPreference,
+} from '../storage/keychain';
 import { pickFallbackQuestions } from './fallback';
 import {
   foundationUnavailableReason,
@@ -16,14 +23,18 @@ export type GenerateResult = {
   notice?: string;
 };
 
-const DEFAULT_COUNT = 7;
-
 export async function generateQuestions(opts: {
   category: CategoryId;
   context: string | null;
   count?: number;
+  targetAge?: number | null;
 }): Promise<GenerateResult> {
-  const count = opts.count ?? DEFAULT_COUNT;
+  const count =
+    opts.count ?? (await getQuestionCount().catch(() => DEFAULT_QUESTION_COUNT));
+  const targetAge =
+    opts.targetAge !== undefined
+      ? opts.targetAge
+      : await getTargetAge().catch(() => null);
   const preference = await getProvider();
   const chain = await orderChain(preference);
   const failures: string[] = [];
@@ -41,6 +52,7 @@ export async function generateQuestions(opts: {
           category: opts.category,
           context: opts.context,
           count,
+          targetAge,
         });
         return {
           questions,
@@ -58,6 +70,7 @@ export async function generateQuestions(opts: {
           category: opts.category,
           context: opts.context,
           count,
+          targetAge,
         });
         return {
           questions,

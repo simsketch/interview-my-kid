@@ -9,7 +9,6 @@ import { categoryById } from '../../src/categories';
 import { listSessions, type Session } from '../../src/db/sessions';
 import {
   fontSize,
-  makeShadow,
   radius,
   spacing,
   useColors,
@@ -86,23 +85,6 @@ export default function HomeScreen() {
         </Text>
       </View>
 
-      <Pressable
-        onPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-          router.push('/new/setup');
-        }}
-        style={({ pressed }) => [styles.cta, pressed && { opacity: 0.85 }]}
-      >
-        <View style={styles.ctaIconBox}>
-          <Ionicons name="add" size={28} color={colors.accentText} />
-        </View>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.ctaTitle}>New interview</Text>
-          <Text style={styles.ctaSub}>Pick a topic, generate cards, record</Text>
-        </View>
-        <Ionicons name="chevron-forward" size={22} color={colors.accentText} />
-      </Pressable>
-
       {sessions !== null && sessions.length > 0 ? (
         <Text style={styles.sectionLabel}>Recent</Text>
       ) : null}
@@ -119,7 +101,7 @@ export default function HomeScreen() {
               </View>
               <Text style={styles.emptyTitle}>No interviews yet</Text>
               <Text style={styles.emptyBody}>
-                Tap "New interview" above to record your first session.
+                Tap the camera button in the menu to record your first session.
               </Text>
             </View>
           ) : null
@@ -169,7 +151,6 @@ function truncate(s: string, n: number): string {
 }
 
 const makeStyles = (colors: Palette) => {
-  const shadow = makeShadow(colors);
   return StyleSheet.create({
     safe: { flex: 1, backgroundColor: colors.bg },
     header: {
@@ -179,35 +160,6 @@ const makeStyles = (colors: Palette) => {
     },
     title: { color: colors.text, fontSize: fontSize.display, fontWeight: '800' },
     subtitle: { color: colors.textMuted, fontSize: fontSize.sm, marginTop: 2 },
-    cta: {
-      marginHorizontal: spacing.lg,
-      marginVertical: spacing.md,
-      backgroundColor: colors.accent,
-      borderRadius: radius.lg,
-      padding: spacing.md,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: spacing.md,
-      ...shadow.card,
-    },
-    ctaIconBox: {
-      width: 44,
-      height: 44,
-      borderRadius: 22,
-      backgroundColor: 'rgba(0, 0, 0, 0.18)',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    ctaTitle: {
-      color: colors.accentText,
-      fontSize: fontSize.lg,
-      fontWeight: '800',
-    },
-    ctaSub: {
-      color: colors.accentText,
-      opacity: 0.75,
-      fontSize: fontSize.sm,
-    },
     sectionLabel: {
       color: colors.textMuted,
       fontSize: fontSize.xs,

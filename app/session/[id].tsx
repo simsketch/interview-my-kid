@@ -403,8 +403,14 @@ export default function SessionDetailScreen() {
         onPress={handleReBurn}
         loading={burning}
         icon={<Ionicons name="flame" size={18} color={colors.text} />}
-        style={{ marginBottom: spacing.sm }}
+        style={{ marginBottom: spacing.xs }}
       />
+      <View style={styles.burnNote}>
+        <Ionicons name="information-circle" size={14} color={colors.accent} />
+        <Text style={styles.burnNoteText}>
+          Burn-in keeps running if you navigate away — feel free to keep using the app while it finishes.
+        </Text>
+      </View>
       <Button
         label={
           exportProgress
@@ -573,5 +579,19 @@ const makeStyles = (colors: Palette) => {
       gap: spacing.sm,
     },
     missing: { color: colors.textMuted, fontSize: fontSize.md },
+    burnNote: {
+      flexDirection: 'row',
+      gap: spacing.xs,
+      alignItems: 'flex-start',
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      marginBottom: spacing.sm,
+    },
+    burnNoteText: {
+      flex: 1,
+      color: colors.textMuted,
+      fontSize: fontSize.xs,
+      lineHeight: fontSize.xs * 1.45,
+    },
   });
 };

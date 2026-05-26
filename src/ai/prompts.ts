@@ -10,15 +10,20 @@ export class GenerationError extends Error {
 export function buildSystemPrompt(opts: {
   category: CategoryId;
   kidName: string | null;
+  targetAge: number | null;
 }): string {
   const cat = categoryById(opts.category);
   const subject = opts.kidName ?? 'the child';
+  const ageLine = opts.targetAge
+    ? `Age: ${opts.targetAge}. Pick vocabulary, attention span, and emotional framing appropriate for a ${opts.targetAge}-year-old.`
+    : null;
   return [
     `You are helping a parent interview their kid (${subject}) on video.`,
     `The parent will read each question aloud as a cue card. Questions should be short, warm, and age-appropriate.`,
     ``,
     `Category: ${cat.label}`,
     cat.systemHint,
+    ...(ageLine ? ['', ageLine] : []),
     ``,
     `Rules:`,
     `- Each question must be one sentence, under ~18 words.`,

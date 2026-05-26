@@ -7,6 +7,14 @@ const PROVIDER_KEY = 'ai_provider';
 const OVERLAY_POS_KEY = 'overlay_position';
 const BURN_IN_KEY = 'burn_in_enabled';
 const THEME_KEY = 'theme_name';
+const TARGET_AGE_KEY = 'target_age';
+const QUESTION_COUNT_KEY = 'question_count';
+
+export const DEFAULT_QUESTION_COUNT = 7;
+export const MIN_QUESTION_COUNT = 3;
+export const MAX_QUESTION_COUNT = 15;
+export const MIN_TARGET_AGE = 3;
+export const MAX_TARGET_AGE = 17;
 
 export async function getThemeName(): Promise<string | null> {
   return SecureStore.getItemAsync(THEME_KEY);
@@ -103,4 +111,38 @@ export async function setKidName(name: string): Promise<void> {
     return;
   }
   await SecureStore.setItemAsync(KID_NAME_KEY, trimmed);
+}
+
+export async function getTargetAge(): Promise<number | null> {
+  const v = await SecureStore.getItemAsync(TARGET_AGE_KEY);
+  if (!v) return null;
+  const n = Number.parseInt(v, 10);
+  if (!Number.isFinite(n)) return null;
+  if (n < MIN_TARGET_AGE || n > MAX_TARGET_AGE) return null;
+  return n;
+}
+
+export async function setTargetAge(age: number | null): Promise<void> {
+  if (age == null) {
+    await SecureStore.deleteItemAsync(TARGET_AGE_KEY);
+    return;
+  }
+  const clamped = Math.max(MIN_TARGET_AGE, Math.min(MAX_TARGET_AGE, Math.round(age)));
+  await SecureStore.setItemAsync(TARGET_AGE_KEY, String(clamped));
+}
+
+export async function getQuestionCount(): Promise<number> {
+  const v = await SecureStore.getItemAsync(QUESTION_COUNT_KEY);
+  if (!v) return DEFAULT_QUESTION_COUNT;
+  const n = Number.parseInt(v, 10);
+  if (!Number.isFinite(n)) return DEFAULT_QUESTION_COUNT;
+  return Math.max(MIN_QUESTION_COUNT, Math.min(MAX_QUESTION_COUNT, n));
+}
+
+export async function setQuestionCount(count: number): Promise<void> {
+  const clamped = Math.max(
+    MIN_QUESTION_COUNT,
+    Math.min(MAX_QUESTION_COUNT, Math.round(count))
+  );
+  await SecureStore.setItemAsync(QUESTION_COUNT_KEY, String(clamped));
 }

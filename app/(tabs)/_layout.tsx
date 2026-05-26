@@ -1,10 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import { Platform } from 'react-native';
+import { Tabs, useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { useColors } from '../../src/theme';
 
 export default function TabsLayout() {
   const colors = useColors();
+  const router = useRouter();
   return (
     <Tabs
       screenOptions={{
@@ -46,6 +48,39 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="new"
+        options={{
+          title: '',
+          tabBarLabel: () => null,
+          tabBarIcon: () => null,
+          tabBarButton: (props) => (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="New interview"
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                router.push('/new/setup');
+              }}
+              style={fabStyles.btnWrap}
+            >
+              <View
+                style={[
+                  fabStyles.btn,
+                  { backgroundColor: colors.accent, shadowColor: colors.text },
+                ]}
+              >
+                <Ionicons name="videocam" size={28} color={colors.accentText} />
+              </View>
+            </Pressable>
+          ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+          },
+        }}
+      />
+      <Tabs.Screen
         name="help"
         options={{
           title: 'How to',
@@ -66,3 +101,23 @@ export default function TabsLayout() {
     </Tabs>
   );
 }
+
+const fabStyles = StyleSheet.create({
+  btnWrap: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  btn: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: -18,
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+  },
+});
