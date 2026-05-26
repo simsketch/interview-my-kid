@@ -41,6 +41,9 @@ fastlane/test_output
 fastlane/screenshots/**/*.png
 fastlane/screenshots/**/*.jpg
 
+# playwright MCP scratch
+.playwright-mcp/
+
 # build outputs
 /build/
 
