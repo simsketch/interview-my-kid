@@ -2,7 +2,7 @@
   "expo": {
     "name": "Interview My Kid",
     "slug": "interview-my-kid",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "scheme": "interviewmykid",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -48,6 +48,12 @@
           "photosPermission": "Interview My Kid needs photo library access to export saved interviews to Photos.",
           "savePhotosPermission": "Interview My Kid needs permission to save interviews to Photos.",
           "isAccessMediaLocationEnabled": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Interview My Kid needs photo library access so you can set a profile picture for your kids."
         }
       ],
       "expo-font"

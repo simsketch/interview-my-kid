@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
   Alert,
@@ -74,6 +75,7 @@ const positionOptions: {
 export default function SettingsScreen() {
   const colors = useColors();
   const styles = useThemedStyles(makeStyles);
+  const router = useRouter();
   const { theme, themeName, setTheme } = useTheme();
 
   const [apiKey, setApiKeyLocal] = useState('');
@@ -194,6 +196,27 @@ export default function SettingsScreen() {
         <Text style={styles.screenTitle}>Settings</Text>
 
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          <Section label="Profiles" sub="One profile per kid">
+            <Pressable
+              onPress={() => router.push('/profiles')}
+              style={({ pressed }) => [
+                styles.linkRow,
+                pressed && { opacity: 0.85 },
+              ]}
+            >
+              <View style={styles.linkIcon}>
+                <Ionicons name="people" size={18} color={colors.accent} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.linkText}>Manage profiles</Text>
+                <Text style={styles.linkSub}>
+                  Add or edit kids, set target ages, pick a photo or emoji
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+            </Pressable>
+          </Section>
+
           <Section label="Theme" sub={`Currently: ${theme.label}`}>
             <View style={styles.themeGrid}>
               {(Object.values(themes) as (typeof themes)[ThemeName][]).map((t) => {
@@ -590,5 +613,11 @@ const makeStyles = (colors: Palette) =>
       color: colors.text,
       fontSize: fontSize.md,
       fontWeight: '700',
+    },
+    linkSub: {
+      color: colors.textMuted,
+      fontSize: fontSize.sm,
+      marginTop: 2,
+      lineHeight: fontSize.sm * 1.4,
     },
   });

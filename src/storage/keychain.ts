@@ -9,6 +9,8 @@ const BURN_IN_KEY = 'burn_in_enabled';
 const THEME_KEY = 'theme_name';
 const TARGET_AGE_KEY = 'target_age';
 const QUESTION_COUNT_KEY = 'question_count';
+const ACTIVE_PROFILE_ID_KEY = 'active_profile_id';
+const SESSIONS_PROFILE_FILTER_KEY = 'sessions_profile_filter';
 
 export const DEFAULT_QUESTION_COUNT = 7;
 export const MIN_QUESTION_COUNT = 3;
@@ -145,4 +147,35 @@ export async function setQuestionCount(count: number): Promise<void> {
     Math.min(MAX_QUESTION_COUNT, Math.round(count))
   );
   await SecureStore.setItemAsync(QUESTION_COUNT_KEY, String(clamped));
+}
+
+export async function getActiveProfileId(): Promise<string | null> {
+  return SecureStore.getItemAsync(ACTIVE_PROFILE_ID_KEY);
+}
+
+export async function setActiveProfileId(id: string | null): Promise<void> {
+  if (id == null) {
+    await SecureStore.deleteItemAsync(ACTIVE_PROFILE_ID_KEY);
+    return;
+  }
+  await SecureStore.setItemAsync(ACTIVE_PROFILE_ID_KEY, id);
+}
+
+/**
+ * Sessions list filter: 'all' shows every kid's sessions, otherwise we use
+ * the active profile id. Stored separately from the active profile so a user
+ * can flip to "All kids" view without losing which kid the New Interview
+ * flow is creating for.
+ */
+export type SessionsProfileFilter = 'active' | 'all';
+
+export async function getSessionsProfileFilter(): Promise<SessionsProfileFilter> {
+  const v = await SecureStore.getItemAsync(SESSIONS_PROFILE_FILTER_KEY);
+  return v === 'all' ? 'all' : 'active';
+}
+
+export async function setSessionsProfileFilter(
+  value: SessionsProfileFilter
+): Promise<void> {
+  await SecureStore.setItemAsync(SESSIONS_PROFILE_FILTER_KEY, value);
 }

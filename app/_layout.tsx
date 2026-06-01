@@ -50,6 +50,11 @@ function ThemedRoot() {
               }}
             />
             <Stack.Screen name="session/[id]" options={{ title: 'Session' }} />
+            <Stack.Screen name="profiles/index" options={{ title: 'Profiles' }} />
+            <Stack.Screen
+              name="profiles/edit"
+              options={{ title: 'Profile', presentation: 'modal' }}
+            />
           </Stack>
         </SQLiteProvider>
       </SafeAreaProvider>

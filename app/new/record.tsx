@@ -192,6 +192,7 @@ export default function RecordScreen() {
         durationMs,
         prompts: draft.prompts,
         cues,
+        profileId: draft.profileId,
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);

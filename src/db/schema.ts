@@ -1,8 +1,9 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
+import { getKidName, getTargetAge } from '../storage/keychain';
 
 export const DB_NAME = 'interviews.db';
 
-const TARGET_VERSION = 3;
+const TARGET_VERSION = 4;
 
 export async function migrate(db: SQLiteDatabase): Promise<void> {
   await db.execAsync(`
@@ -57,6 +58,48 @@ export async function migrate(db: SQLiteDatabase): Promise<void> {
       );
       CREATE INDEX IF NOT EXISTS idx_card_sets_updated_at ON card_sets(updated_at DESC);
     `);
+  }
+
+  if (current < 4) {
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS profiles (
+        id TEXT PRIMARY KEY NOT NULL,
+        name TEXT NOT NULL,
+        emoji TEXT,
+        photo_path TEXT,
+        target_age INTEGER,
+        sort_order INTEGER NOT NULL DEFAULT 0,
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_profiles_sort ON profiles(sort_order ASC);
+    `);
+    await tryAddColumn(db, 'sessions', 'profile_id', 'TEXT');
+
+    const existing = await db.getFirstAsync<{ n: number }>(
+      `SELECT COUNT(*) as n FROM profiles`
+    );
+    if ((existing?.n ?? 0) === 0) {
+      const seedName =
+        (await getKidName().catch(() => null))?.trim() || 'My kid';
+      const seedAge = await getTargetAge().catch(() => null);
+      const id = `prof_${Date.now().toString(36)}`;
+      const now = Date.now();
+      await db.runAsync(
+        `INSERT INTO profiles (id, name, emoji, photo_path, target_age, sort_order, created_at, updated_at)
+         VALUES (?, ?, ?, NULL, ?, 0, ?, ?)`,
+        id,
+        seedName,
+        '🧒',
+        seedAge,
+        now,
+        now
+      );
+      await db.runAsync(
+        `UPDATE sessions SET profile_id = ? WHERE profile_id IS NULL`,
+        id
+      );
+    }
   }
 
   if (current < TARGET_VERSION) {

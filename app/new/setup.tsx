@@ -23,12 +23,19 @@ import { generateQuestions } from '../../src/ai/generate';
 import { categoryById, type CategoryId } from '../../src/categories';
 import { Button } from '../../src/components/Button';
 import { CategoryPickerSheet } from '../../src/components/CategoryPickerSheet';
+import { ProfileAvatar } from '../../src/components/ProfileAvatar';
+import { ProfilePickerSheet } from '../../src/components/ProfilePickerSheet';
 import { WheelPickerModal } from '../../src/components/WheelPickerModal';
 import {
   listCardSetsByCategory,
   markCardSetUsed,
   type CardSet,
 } from '../../src/db/cardSets';
+import {
+  listProfiles,
+  updateProfile,
+  type Profile,
+} from '../../src/db/profiles';
 import { setDraft } from '../../src/state/draft';
 import {
   DEFAULT_QUESTION_COUNT,
@@ -36,10 +43,10 @@ import {
   MAX_TARGET_AGE,
   MIN_QUESTION_COUNT,
   MIN_TARGET_AGE,
+  getActiveProfileId,
   getQuestionCount,
-  getTargetAge,
+  setActiveProfileId,
   setQuestionCount,
-  setTargetAge,
 } from '../../src/storage/keychain';
 import {
   fontSize,
@@ -91,11 +98,14 @@ export default function NewSetupScreen() {
   const [context, setContext] = useState('');
   const [generating, setGenerating] = useState(false);
   const [savedSets, setSavedSets] = useState<CardSet[]>([]);
-  const [targetAge, setTargetAgeLocal] = useState<number | null>(null);
   const [count, setCountLocal] = useState<number>(DEFAULT_QUESTION_COUNT);
-  const [pickerOpen, setPickerOpen] = useState<'age' | 'count' | 'topic' | null>(
-    null
-  );
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [activeProfile, setActiveProfile] = useState<Profile | null>(null);
+  const [pickerOpen, setPickerOpen] = useState<
+    'age' | 'count' | 'topic' | 'profile' | null
+  >(null);
+
+  const targetAge = activeProfile?.targetAge ?? null;
 
   useFocusEffect(
     useCallback(() => {
@@ -112,30 +122,47 @@ export default function NewSetupScreen() {
   useFocusEffect(
     useCallback(() => {
       let active = true;
-      Promise.all([getTargetAge(), getQuestionCount()])
-        .then(([age, c]) => {
-          if (!active) return;
-          setTargetAgeLocal(age);
-          setCountLocal(c);
-        })
-        .catch(() => undefined);
+      (async () => {
+        const [allProfiles, activeId, c] = await Promise.all([
+          listProfiles(db),
+          getActiveProfileId(),
+          getQuestionCount(),
+        ]);
+        if (!active) return;
+        setProfiles(allProfiles);
+        setCountLocal(c);
+        const fallback = allProfiles[0] ?? null;
+        const found =
+          allProfiles.find((p) => p.id === activeId) ?? fallback;
+        setActiveProfile(found);
+      })().catch(() => undefined);
       return () => {
         active = false;
       };
-    }, [])
+    }, [db])
   );
 
-  function applyAge(value: string) {
+  async function applyAge(value: string) {
     setPickerOpen(null);
-    if (value === 'any') {
-      setTargetAgeLocal(null);
-      setTargetAge(null).catch(() => undefined);
-      return;
+    if (!activeProfile) return;
+    const newAge =
+      value === 'any'
+        ? null
+        : Number.isFinite(Number.parseInt(value, 10))
+          ? Number.parseInt(value, 10)
+          : null;
+    setActiveProfile({ ...activeProfile, targetAge: newAge });
+    try {
+      await updateProfile(db, activeProfile.id, { targetAge: newAge });
+    } catch {
+      /* ignore */
     }
-    const n = Number.parseInt(value, 10);
-    if (!Number.isFinite(n)) return;
-    setTargetAgeLocal(n);
-    setTargetAge(n).catch(() => undefined);
+  }
+
+  async function handleSelectProfile(id: string) {
+    const profile = profiles.find((p) => p.id === id) ?? null;
+    setActiveProfile(profile);
+    await setActiveProfileId(id);
   }
 
   function applyCount(value: string) {
@@ -170,6 +197,7 @@ export default function NewSetupScreen() {
       category: set.category,
       context: context.trim().length > 0 ? context.trim() : null,
       prompts: set.prompts.slice(),
+      profileId: activeProfile?.id ?? null,
     });
     router.push('/new/edit');
   }
@@ -188,7 +216,12 @@ export default function NewSetupScreen() {
         count,
         targetAge,
       });
-      setDraft({ category, context: trimmedContext, prompts: result.questions });
+      setDraft({
+        category,
+        context: trimmedContext,
+        prompts: result.questions,
+        profileId: activeProfile?.id ?? null,
+      });
       router.push('/new/edit');
       if (result.notice) {
         setTimeout(() => {
@@ -210,6 +243,7 @@ export default function NewSetupScreen() {
       category,
       context: context.trim().length > 0 ? context.trim() : null,
       prompts: [],
+      profileId: activeProfile?.id ?? null,
     });
     router.push('/new/edit');
   }
@@ -232,6 +266,27 @@ export default function NewSetupScreen() {
               edit before recording.
             </Text>
           </View>
+
+          {activeProfile ? (
+            <Pressable
+              onPress={() => setPickerOpen('profile')}
+              style={({ pressed }) => [
+                styles.profileChip,
+                pressed && { opacity: 0.85 },
+              ]}
+            >
+              <ProfileAvatar profile={activeProfile} size={28} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.profileChipLabel}>For</Text>
+                <Text style={styles.profileChipName} numberOfLines={1}>
+                  {activeProfile.name}
+                </Text>
+              </View>
+              {profiles.length > 1 ? (
+                <Ionicons name="chevron-down" size={16} color={colors.textMuted} />
+              ) : null}
+            </Pressable>
+          ) : null}
 
           <View style={styles.optionsRow}>
             <Pressable
@@ -401,6 +456,14 @@ export default function NewSetupScreen() {
         onSelect={setCategory}
         onClose={() => setPickerOpen(null)}
       />
+      <ProfilePickerSheet
+        visible={pickerOpen === 'profile'}
+        profiles={profiles}
+        activeProfileId={activeProfile?.id ?? null}
+        onSelect={handleSelectProfile}
+        onManage={() => router.push('/profiles')}
+        onClose={() => setPickerOpen(null)}
+      />
       <WheelPickerModal
         visible={pickerOpen === 'count'}
         title="Number of questions"
@@ -439,6 +502,30 @@ const makeStyles = (colors: Palette) => {
     },
     intro: { marginBottom: spacing.md },
     heading: { color: colors.text, fontSize: fontSize.xxl, fontWeight: '800' },
+    profileChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+      backgroundColor: colors.bgElevated,
+      borderRadius: radius.md,
+      paddingVertical: spacing.xs + 2,
+      paddingHorizontal: spacing.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+      marginBottom: spacing.lg,
+    },
+    profileChipLabel: {
+      color: colors.textMuted,
+      fontSize: 10,
+      fontWeight: '800',
+      letterSpacing: 1,
+      textTransform: 'uppercase',
+    },
+    profileChipName: {
+      color: colors.text,
+      fontSize: fontSize.md,
+      fontWeight: '700',
+    },
     subheading: {
       color: colors.textMuted,
       fontSize: fontSize.md,

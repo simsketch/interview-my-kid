@@ -13,6 +13,7 @@ export type Session = {
   durationMs: number;
   exportedToPhotos: boolean;
   cues: Cue[];
+  profileId: string | null;
 };
 
 export type SessionWithPrompts = Session & { prompts: string[] };
@@ -27,6 +28,7 @@ type SessionRow = {
   duration_ms: number;
   exported_to_photos: number;
   cues_json: string | null;
+  profile_id: string | null;
 };
 
 type PromptRow = { text: string };
@@ -62,6 +64,7 @@ function rowToSession(row: SessionRow): Session {
     durationMs: row.duration_ms,
     exportedToPhotos: row.exported_to_photos === 1,
     cues: parseCues(row.cues_json),
+    profileId: row.profile_id,
   };
 }
 
@@ -70,10 +73,27 @@ export function generateId(): string {
   return `${Date.now().toString(36)}-${rand}`;
 }
 
-export async function listSessions(db: SQLiteDatabase): Promise<Session[]> {
-  const rows = await db.getAllAsync<SessionRow>(
-    `SELECT * FROM sessions ORDER BY created_at DESC`
-  );
+export async function listSessions(
+  db: SQLiteDatabase,
+  filter?: { profileId?: string | null }
+): Promise<Session[]> {
+  let rows: SessionRow[];
+  if (filter && filter.profileId !== undefined) {
+    if (filter.profileId === null) {
+      rows = await db.getAllAsync<SessionRow>(
+        `SELECT * FROM sessions WHERE profile_id IS NULL ORDER BY created_at DESC`
+      );
+    } else {
+      rows = await db.getAllAsync<SessionRow>(
+        `SELECT * FROM sessions WHERE profile_id = ? ORDER BY created_at DESC`,
+        filter.profileId
+      );
+    }
+  } else {
+    rows = await db.getAllAsync<SessionRow>(
+      `SELECT * FROM sessions ORDER BY created_at DESC`
+    );
+  }
   return rows.map(rowToSession);
 }
 
@@ -103,6 +123,7 @@ export async function createSession(
     durationMs: number;
     prompts: string[];
     cues: Cue[];
+    profileId: string | null;
   }
 ): Promise<string> {
   const id = input.id ?? generateId();
@@ -111,15 +132,16 @@ export async function createSession(
   await db.withTransactionAsync(async () => {
     await db.runAsync(
       `INSERT INTO sessions
-       (id, created_at, category, context, video_path, duration_ms, exported_to_photos, cues_json)
-       VALUES (?, ?, ?, ?, ?, ?, 0, ?)`,
+       (id, created_at, category, context, video_path, duration_ms, exported_to_photos, cues_json, profile_id)
+       VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?)`,
       id,
       createdAt,
       input.category,
       input.context,
       input.videoPath,
       input.durationMs,
-      cuesJson
+      cuesJson,
+      input.profileId
     );
     for (let i = 0; i < input.prompts.length; i++) {
       await db.runAsync(

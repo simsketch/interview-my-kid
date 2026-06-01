@@ -4,6 +4,7 @@ export type Draft = {
   category: CategoryId;
   context: string | null;
   prompts: string[];
+  profileId: string | null;
 };
 
 let current: Draft | null = null;
