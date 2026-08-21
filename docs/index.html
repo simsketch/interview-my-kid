@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interview My Kid — Better questions for your kid</title>
+<meta name="description" content="Record short video interviews with your child using AI-generated cue cards. Everything stays on your iPhone. Free on the App Store.">
+<link rel="canonical" href="https://simsketch.github.io/interview-my-kid/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Interview My Kid">
+<meta property="og:description" content="The interview questions you'll wish you asked. Record video interviews with your kid using AI-generated cue cards — all on-device.">
+<meta property="og:url" content="https://simsketch.github.io/interview-my-kid/">
+<meta property="og:image" content="https://simsketch.github.io/interview-my-kid/assets/01-capture.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="apple-itunes-app" content="app-id=6767672476">
+<link rel="icon" href="assets/icon.webp">
+<style>
+  :root{
+    --bg:#fbf7f2; --surface:#ffffff; --ink:#1e1a17; --muted:#6b6058;
+    --line:#e8ded2; --accent:#c2562c; --accent-ink:#ffffff; --soft:#f4ece2;
+    --radius:18px;
+    --max:1080px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#141210; --surface:#1e1a17; --ink:#f5efe8; --muted:#a89b90;
+      --line:#302a25; --accent:#e8794a; --accent-ink:#1a1310; --soft:#241f1b;
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
+  section{padding:56px 0}
+  h1,h2,h3{line-height:1.15; letter-spacing:-.02em; margin:0}
+  h1{font-size:clamp(30px,7vw,52px); font-weight:800}
+  h2{font-size:clamp(24px,4.6vw,34px); font-weight:750; margin-bottom:10px}
+  h3{font-size:17px; font-weight:700; margin-bottom:4px}
+  p{margin:0}
+  .lede{font-size:clamp(17px,2.4vw,20px); color:var(--muted); margin-top:16px; max-width:36ch}
+
+  /* hero */
+  .hero{padding:44px 0 8px}
+  .hero-grid{display:grid; gap:36px; align-items:center}
+  @media(min-width:860px){
+    .hero-grid{grid-template-columns:1fr 380px; gap:56px}
+    .lede{max-width:34ch}
+  }
+  .badge-row{display:flex; align-items:center; gap:12px; margin-bottom:22px}
+  .appicon{width:52px; height:52px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,.14)}
+  .badge-name{font-weight:700; font-size:15px}
+  .badge-sub{font-size:13px; color:var(--muted)}
+
+  .cta{margin-top:28px; display:flex; flex-direction:column; gap:12px; align-items:flex-start}
+  .appstore{display:inline-flex; text-decoration:none; border-radius:11px; overflow:hidden;
+            box-shadow:0 2px 12px rgba(0,0,0,.16); transition:transform .12s ease}
+  .appstore:active{transform:scale(.97)}
+  .appstore svg{display:block; height:56px; width:auto}
+  .cta-note{font-size:13.5px; color:var(--muted)}
+
+  .shot{width:100%; height:auto; border-radius:26px; display:block;
+        box-shadow:0 18px 50px rgba(0,0,0,.20); border:1px solid var(--line)}
+  .hero-shot{max-width:330px; margin:0 auto}
+
+  /* steps */
+  .steps{display:grid; gap:18px; margin-top:28px}
+  @media(min-width:720px){.steps{grid-template-columns:repeat(3,1fr); gap:22px}}
+  .step{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:22px}
+  .num{display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px;
+       border-radius:50%; background:var(--accent); color:var(--accent-ink);
+       font-size:14px; font-weight:700; margin-bottom:12px}
+  .step p{color:var(--muted); font-size:15px}
+
+  /* gallery */
+  .gal{display:grid; grid-auto-flow:column; grid-auto-columns:74%; gap:14px; margin-top:26px;
+       overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:8px;
+       -webkit-overflow-scrolling:touch; scrollbar-width:thin}
+  .gal figure{margin:0; scroll-snap-align:center}
+  .gal img{width:100%; height:auto; border-radius:20px; border:1px solid var(--line);
+           box-shadow:0 10px 30px rgba(0,0,0,.14); display:block}
+  .gal figcaption{font-size:13.5px; color:var(--muted); margin-top:10px; text-align:center}
+  @media(min-width:720px){.gal{grid-auto-columns:290px}}
+
+  /* privacy */
+  .privacy{background:var(--soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .plist{list-style:none; padding:0; margin:22px 0 0; display:grid; gap:14px}
+  @media(min-width:720px){.plist{grid-template-columns:repeat(3,1fr); gap:20px}}
+  .plist li{display:flex; gap:11px; align-items:flex-start; font-size:15px; color:var(--muted)}
+  .tick{flex:0 0 auto; margin-top:3px; color:var(--accent)}
+
+  /* features */
+  .feats{columns:2; column-gap:34px; margin-top:22px; padding:0; list-style:none}
+  @media(max-width:620px){.feats{columns:1}}
+  .feats li{break-inside:avoid; margin-bottom:11px; font-size:15px; color:var(--muted);
+            padding-left:18px; position:relative}
+  .feats li::before{content:"·"; position:absolute; left:4px; color:var(--accent); font-weight:700}
+
+  /* final */
+  .final{text-align:center}
+  .final .cta{align-items:center; margin-top:24px}
+  .final .lede{margin-left:auto; margin-right:auto; text-align:center}
+
+  footer{border-top:1px solid var(--line); padding:30px 0 44px; font-size:14px; color:var(--muted)}
+  footer a{color:var(--muted); text-decoration:underline; text-underline-offset:2px}
+  footer nav{display:flex; gap:18px; flex-wrap:wrap; margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<header class="wrap hero">
+  <div class="hero-grid">
+    <div>
+      <div class="badge-row">
+        <img class="appicon" src="assets/icon.webp" alt="Interview My Kid app icon" width="52" height="52">
+        <div>
+          <div class="badge-name">Interview My Kid</div>
+          <div class="badge-sub">iPhone &amp; iPad · Free</div>
+        </div>
+      </div>
+
+      <h1>The interview questions you&rsquo;ll wish you asked</h1>
+      <p class="lede">Turn everyday moments with your kid into treasured memories. The app writes the questions &mdash; you just hit record.</p>
+
+      <div class="cta">
+        <a class="appstore" href="https://apps.apple.com/app/id6767672476?ct=web-landing&amp;mt=8" aria-label="Download Interview My Kid on the App Store">
+          <svg viewBox="0 0 180 60" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <rect width="180" height="60" rx="11" fill="#000"/>
+            <path fill="#fff" d="M36.6 30.6c0-3.5 2.9-5.2 3-5.3-1.6-2.4-4.2-2.7-5.1-2.7-2.2-.2-4.2 1.3-5.3 1.3-1.1 0-2.8-1.3-4.6-1.2-2.4 0-4.6 1.4-5.8 3.5-2.5 4.3-.6 10.7 1.8 14.2 1.2 1.7 2.6 3.6 4.4 3.5 1.8-.1 2.5-1.1 4.6-1.1 2.1 0 2.7 1.1 4.6 1.1 1.9 0 3.1-1.7 4.3-3.4 1.4-2 1.9-3.9 1.9-4-.04-.02-3.7-1.4-3.8-5.6zm-3.5-10.3c1-1.2 1.6-2.8 1.4-4.5-1.4.06-3.1.95-4.1 2.1-.9 1-1.7 2.7-1.5 4.3 1.6.12 3.2-.8 4.2-1.9z"/>
+            <text x="52" y="26" fill="#fff" font-family="-apple-system,Helvetica,Arial,sans-serif" font-size="11.5" letter-spacing=".4">Download on the</text>
+            <text x="52" y="45" fill="#fff" font-family="-apple-system,Helvetica,Arial,sans-serif" font-size="21.5" font-weight="600" letter-spacing="-.3">App Store</text>
+          </svg>
+        </a>
+        <p class="cta-note">Works offline. Everything stays on your device.</p>
+      </div>
+    </div>
+
+    <div class="hero-shot">
+      <img class="shot" src="assets/01-capture.webp" alt="Interview My Kid showing a cue card ready to record" width="620" height="1347" fetchpriority="high">
+    </div>
+  </div>
+</header>
+
+<section class="wrap">
+  <h2>How it works</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <h3>Pick a moment</h3>
+      <p>After a game, before school, at the end of a hard day. Eleven categories, from sports to milestones to free-form.</p>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <h3>Get seven cue cards</h3>
+      <p>The app writes warm, age-appropriate questions using on-device Apple Intelligence. Edit them, reorder them, save the sets you love.</p>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <h3>Read and record</h3>
+      <p>The card sits on your screen like a teleprompter. Read it aloud, tap Next, and the camera keeps rolling on your kid.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>A look inside</h2>
+  <p class="lede">Six screens from the app.</p>
+  <div class="gal">
+    <figure><img src="assets/02-record.webp" alt="Recording with a teleprompter cue card overlay" width="620" height="1347" loading="lazy"><figcaption>Teleprompter while you record</figcaption></figure>
+    <figure><img src="assets/05-edit-cards.webp" alt="Editing and reordering cue cards" width="620" height="1347" loading="lazy"><figcaption>Edit and reorder every card</figcaption></figure>
+    <figure><img src="assets/03-setup.webp" alt="Choosing a category and question count" width="620" height="1347" loading="lazy"><figcaption>Choose a topic and target age</figcaption></figure>
+    <figure><img src="assets/06-sessions.webp" alt="Library of saved interview sessions" width="620" height="1347" loading="lazy"><figcaption>Your private session library</figcaption></figure>
+    <figure><img src="assets/04-privacy.webp" alt="Privacy settings screen" width="620" height="1347" loading="lazy"><figcaption>Everything stays on device</figcaption></figure>
+    <figure><img src="assets/01-capture.webp" alt="Cue card ready to record" width="620" height="1347" loading="lazy"><figcaption>Seven cards per session</figcaption></figure>
+  </div>
+</section>
+
+<section class="privacy">
+  <div class="wrap">
+    <h2>Your kid&rsquo;s videos stay on your phone</h2>
+    <p class="lede">Recordings, questions, and sessions live in local storage on your device.</p>
+    <ul class="plist">
+      <li><span class="tick">✓</span><span>Videos are saved to your device and stay there until you export them yourself.</span></li>
+      <li><span class="tick">✓</span><span>Question generation runs on-device with Apple Intelligence on iOS 26+.</span></li>
+      <li><span class="tick">✓</span><span>A built-in bank of 360+ hand-written questions works fully offline.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>Everything in the app</h2>
+  <ul class="feats">
+    <li>AI cue cards across 11 categories, each with hand-curated fallbacks</li>
+    <li>On-device Apple Intelligence — works with no internet and no API key (iOS 26+)</li>
+    <li>Optional cloud generation with your own OpenRouter key</li>
+    <li>360+ hand-written questions built in</li>
+    <li>Save and reuse cue card sets</li>
+    <li>Drag to reorder cards in the editor</li>
+    <li>Teleprompter overlay at top, middle, or bottom</li>
+    <li>Burn question text into exported video for sharing</li>
+    <li>Multiple kid profiles</li>
+    <li>Six color themes, including two light modes</li>
+    <li>Export to Photos with questions baked in</li>
+    <li>Local storage for every recording</li>
+  </ul>
+</section>
+
+<section class="wrap final">
+  <h2>Start with one question</h2>
+  <p class="lede">Ask it tonight. You&rsquo;ll be glad you have the answer in ten years.</p>
+  <div class="cta">
+    <a class="appstore" href="https://apps.apple.com/app/id6767672476?ct=web-landing-footer&amp;mt=8" aria-label="Download Interview My Kid on the App Store">
+      <svg viewBox="0 0 180 60" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <rect width="180" height="60" rx="11" fill="#000"/>
+        <path fill="#fff" d="M36.6 30.6c0-3.5 2.9-5.2 3-5.3-1.6-2.4-4.2-2.7-5.1-2.7-2.2-.2-4.2 1.3-5.3 1.3-1.1 0-2.8-1.3-4.6-1.2-2.4 0-4.6 1.4-5.8 3.5-2.5 4.3-.6 10.7 1.8 14.2 1.2 1.7 2.6 3.6 4.4 3.5 1.8-.1 2.5-1.1 4.6-1.1 2.1 0 2.7 1.1 4.6 1.1 1.9 0 3.1-1.7 4.3-3.4 1.4-2 1.9-3.9 1.9-4-.04-.02-3.7-1.4-3.8-5.6zm-3.5-10.3c1-1.2 1.6-2.8 1.4-4.5-1.4.06-3.1.95-4.1 2.1-.9 1-1.7 2.7-1.5 4.3 1.6.12 3.2-.8 4.2-1.9z"/>
+        <text x="52" y="26" fill="#fff" font-family="-apple-system,Helvetica,Arial,sans-serif" font-size="11.5" letter-spacing=".4">Download on the</text>
+        <text x="52" y="45" fill="#fff" font-family="-apple-system,Helvetica,Arial,sans-serif" font-size="21.5" font-weight="600" letter-spacing="-.3">App Store</text>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<footer class="wrap">
+  <nav>
+    <a href="PRIVACY">Privacy Policy</a>
+    <a href="SUPPORT">Support</a>
+    <a href="https://github.com/simsketch/interview-my-kid">Source on GitHub</a>
+  </nav>
+  <p>Interview My Kid · Made for parents who want to remember.</p>
+</footer>
+
+</body>
+</html>
