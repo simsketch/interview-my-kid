@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createSession, generateId, type Cue } from '../../src/db/sessions';
+import { maybeRequestReview } from '../../src/reviews';
 import { clearDraft, getDraft } from '../../src/state/draft';
 import { moveRecordedVideo } from '../../src/storage/files';
 import {
@@ -211,6 +212,11 @@ export default function RecordScreen() {
     } else {
       router.replace('/');
     }
+
+    // After the navigation, so the prompt lands on the saved session rather
+    // than over the recording screen. Intentionally not awaited — the save is
+    // already complete and a rating ask must never delay it.
+    void maybeRequestReview(db);
   }
 
   function handleCancel() {

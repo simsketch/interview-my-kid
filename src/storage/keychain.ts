@@ -11,6 +11,7 @@ const TARGET_AGE_KEY = 'target_age';
 const QUESTION_COUNT_KEY = 'question_count';
 const ACTIVE_PROFILE_ID_KEY = 'active_profile_id';
 const SESSIONS_PROFILE_FILTER_KEY = 'sessions_profile_filter';
+const REVIEW_REQUESTED_KEY = 'review_requested';
 
 export const DEFAULT_QUESTION_COUNT = 7;
 export const MIN_QUESTION_COUNT = 3;
@@ -178,4 +179,17 @@ export async function setSessionsProfileFilter(
   value: SessionsProfileFilter
 ): Promise<void> {
   await SecureStore.setItemAsync(SESSIONS_PROFILE_FILTER_KEY, value);
+}
+
+/**
+ * Whether we've already handed this install to StoreKit's review prompt.
+ * Apple caps the system dialog at three appearances a year and gives no way
+ * to read that budget, so we spend ours once, deliberately.
+ */
+export async function getReviewRequested(): Promise<boolean> {
+  return (await SecureStore.getItemAsync(REVIEW_REQUESTED_KEY)) === 'true';
+}
+
+export async function setReviewRequested(): Promise<void> {
+  await SecureStore.setItemAsync(REVIEW_REQUESTED_KEY, 'true');
 }

@@ -55,3 +55,6 @@ fastlane/screenshots/**/*.jpg
 /android
 *.cer
 *.p12
+
+# Meta Marketing API scratch — holds a live access token
+meta-token.json
